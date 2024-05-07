@@ -56,7 +56,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
                 About
               </SidebarButton>
             </Sidebar>
-            <div className=" mx-auto px-8 flex-1 overflow-auto">{props.children}</div>
+            <div className="flex-1 overflow-auto">{props.children}</div>
           </div>
         </div>
       </body>

@@ -7,6 +7,11 @@ datasource db {
   url      = "file:./sqlite.db"
 }
 
+model AppSettings {
+  id       Int    @id @default(autoincrement())
+  basePath String
+}
+
 model User {
   id                     Int              @id @default(autoincrement())
   email                  String           @unique
@@ -57,14 +62,16 @@ model Session {
 }
 
 model Item {
-  id       Int        @id @default(autoincrement())
-  title    String
-  type     ItemType   @relation(fields: [typeId], references: [id])
-  typeId   Int
-  content  String?
-  author   User?      @relation(fields: [authorId], references: [id])
-  authorId Int?
-  tags     ItemTags[]
+  id         Int        @id @default(autoincrement())
+  title      String
+  type       ItemType   @relation(fields: [typeId], references: [id])
+  typeId     Int
+  filePath   String
+  uri        String     @unique
+  author     User?      @relation(fields: [authorId], references: [id])
+  authorId   Int?
+  uploadDate DateTime
+  tags       ItemTags[]
 }
 
 model ItemType {

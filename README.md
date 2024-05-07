@@ -35,6 +35,15 @@ Currently working on setting up UI, state, DB, and Auth
     - [ ] Images
     - [ ] Video
     - [ ] Markdown
-      - [ ] Support linking other data
+      - [x] Basic support
+      - [ ] Support linking other items
     - [ ] 3D models
+  - [ ] List displays
+    - [ ] Blog
+    - [ ] Forum
+    - [ ] Grid
+  - [ ] Themes
+    - [ ] Dark-mode
+    - [ ] Light-mode
+    - [ ] Changeable accent color
 
