@@ -30,6 +30,7 @@ Currently working on setting up UI, state, DB, and Auth
 - [ ] Plain file structure
   - [ ] Based on simplified versions of names
   - [ ] Backing up this structure should keep all the data intact, even if Gal db is lost
+    - [ ] Will require some basic file-management UI
 - [ ] UI
   - [ ] Data displays
     - [ ] Images
@@ -47,3 +48,7 @@ Currently working on setting up UI, state, DB, and Auth
     - [ ] Light-mode
     - [ ] Changeable accent color
 
+#### Next steps
+- Posting
+  - FileSystem UI, confined to the directory in settings
+- Auth

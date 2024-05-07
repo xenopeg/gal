@@ -1,7 +1,7 @@
 import React from "react";
 import { promises as fs } from "fs";
 import ReactMarkdown from "react-markdown";
-import type { Item as ItemProps, Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import prisma from "@/db";
 import path from "path";
 import Tag from "./Tag";
