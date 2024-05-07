@@ -11,6 +11,8 @@ one's work.
 
 A remake of an old Rust egui project of mine that never really went anywhere.
 
+I'm also using this project to get familiar with NextJS, TypeScript, and Tailwind.
+
 ### Progress
 
 #### Current State
