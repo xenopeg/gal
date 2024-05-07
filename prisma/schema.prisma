@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./sqlite.db"
+}
+
+model User {
+  id                     Int              @id @default(autoincrement())
+  email                  String           @unique
+  username               String
+  passwordHash           String
+  passwordHashSalt       String
+  passwordHashIterations Int
+  items                  Item[]
+  sessions               Session[]
+  userPermissions        UserPermission[]
+  roles                  Role[]
+}
+
+model Role {
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String
+  users           User[]
+  rolePermissions RolePermission[]
+}
+
+model UserPermission {
+  id           Int        @id @default(autoincrement())
+  positive     Boolean
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  positive     Boolean
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  roleId       Int
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdOn DateTime
+  expiresAt DateTime
+  disabled  Boolean
+}
+
+model Item {
+  id       Int        @id @default(autoincrement())
+  title    String
+  type     ItemType   @relation(fields: [typeId], references: [id])
+  typeId   Int
+  content  String?
+  author   User?      @relation(fields: [authorId], references: [id])
+  authorId Int?
+  tags     ItemTags[]
+}
+
+model ItemType {
+  id          Int    @id @default(autoincrement())
+  type        String @unique
+  description String
+  items       Item[]
+}
+
+model ItemTags {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  type      TagType @relation(fields: [tagTypeId], references: [id])
+  tagTypeId Int
+  items     Item[]
+
+  @@unique([name, tagTypeId])
+}
+
+model TagType {
+  id          Int        @id @default(autoincrement())
+  type        String     @unique
+  description String
+  showType    Boolean
+  itemTags    ItemTags[]
+}
+
+model Permission {
+  id              String           @id
+  description     String
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+}
