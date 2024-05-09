@@ -1,11 +1,12 @@
-import { ReactNode, DetailedHTMLProps, HTMLAttributes, HTMLProps } from "react";
+import { ReactNode, DetailedHTMLProps, SVGProps, HTMLAttributes } from "react";
 
 interface Tags {
   [tag: string]: (
     strings: TemplateStringsArray,
     ...n: ((props: any) => string)[]
   ) => (
-    props: DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> &
+    props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> &
+      SVGProps<SVGGElement> &
       Record<string, any>,
   ) => ReactNode;
 }
