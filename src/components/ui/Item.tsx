@@ -5,14 +5,15 @@ import type { Prisma } from "@prisma/client";
 import prisma from "@/db";
 import path from "path";
 import Tag from "./Tag";
+import tailplug from "@/lib/TailPlug";
 
 export type ItemWithInfo = Prisma.PromiseReturnType<typeof getItem>;
 
 export async function getItem(uri: string) {
-  try{
+  try {
     const item = await prisma.item.findFirstOrThrow({
       where: {
-        uri
+        uri,
       },
       include: {
         tags: {
@@ -24,7 +25,7 @@ export async function getItem(uri: string) {
       },
     });
     return item;
-  }catch(e){
+  } catch (e) {
     console.log(e);
     throw e;
   }
@@ -41,32 +42,42 @@ export async function getFileContent(item: ItemWithInfo) {
   return Buffer.from([]);
 }
 
+const ItemContainer = tailplug.div`
+  container overflow-auto rounded-md 
+  bg-violet-900/10 shadow
+  dark:shadow-violet-200/10
+`;
+const ItemHeader = tailplug.div`
+  flex flex-row items-center 
+  border-b border-zinc-900 px-4 py-2
+`;
+
 const Item: React.FC<{ item: ItemWithInfo; content: string | Buffer }> = ({
   item,
   content,
 }) => {
   return (
-    <div className="py-2 px-4">
-      <div className=" bg-zinc-800/40 overflow-auto rounded-xl border-zinc-600 border">
-        <div className="p-2 border-zinc-600 border-b">
-          <div>
-            {item.tags.map((tag) => (
-              <Tag key={`${tag.type.type}:${tag.name}`} tag={tag} />
-            ))}
-          </div>
-        </div>
-        <div className="py-2 px-4 border-zinc-800 border-b flex flex-row items-center">
-          <h2 className="text-2xl flex-1">{item.title}</h2>
+    <div className="px-4 py-2">
+      <ItemContainer>
+        <ItemHeader>
+          <h2 className="flex-1 text-2xl">{item.title}</h2>
           <span className="italic">{item.type.type}</span>
-        </div>
-        <div className="py-2 px-4 bg-zinc-900/50 ">
+        </ItemHeader>
+        <div className="bg-zinc-900/50 px-4 py-2 ">
           {item.type.type === "Markdown" && (
             <div className="prose prose-sm dark:prose-invert">
               <ReactMarkdown>{content as string}</ReactMarkdown>
             </div>
           )}
         </div>
-      </div>
+        <div className="p-2">
+          <div>
+            {item.tags.map((tag) => (
+              <Tag key={`${tag.type.type}:${tag.name}`} tag={tag} />
+            ))}
+          </div>
+        </div>
+      </ItemContainer>
     </div>
   );
 };

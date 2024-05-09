@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 const TagTypes = {
-  author: "bg-orange-700 hover:bg-orange-600"
+  author: "bg-yellow-700 hover:bg-yellow-800"
 }
 
 function getTagColor(type:string){
