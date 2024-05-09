@@ -39,7 +39,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           `,
           }}
         />
-        <div className="light container h-screen w-screen flex flex-col">
+        <div className="h-screen w-screen flex flex-col">
           <Header />
           <div className="flex flex-row overflow-hidden flex-1 w-screen">
             <Sidebar>

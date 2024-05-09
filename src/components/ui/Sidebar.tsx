@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 const SidebarContainer = tailplug.aside`
   h-screen w-64 pt-2 transition-transform 
   border-r border-gray-200 dark:border-zinc-800
-  bg-white dark:bg-zinc-900 
+  bg-white dark:bg-zinc-900/40 
   sm:translate-x-0 -translate-x-full 
 `;
 

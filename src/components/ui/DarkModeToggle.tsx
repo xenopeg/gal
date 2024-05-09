@@ -7,7 +7,6 @@ export default function DarkModeToggle() {
     <div className="flex items-center ms-3">
       <button
         onClick={() => {
-          console.log("hoi light");
           document.documentElement.classList.remove("dark");
           localStorage.setItem("theme", "light");
         }}
@@ -17,7 +16,6 @@ export default function DarkModeToggle() {
       </button>
       <button
         onClick={() => {
-          console.log("hoi dark");
           document.documentElement.classList.add("dark");
           localStorage.setItem("theme", "dark");
         }}
