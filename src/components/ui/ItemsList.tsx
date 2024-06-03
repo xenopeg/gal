@@ -1,5 +1,6 @@
 import prisma from "@/db";
 import Item, { ItemWithInfo } from "./Item";
+import { ReactNode } from "react";
 
 export async function getItems({
   filter,
@@ -24,6 +25,31 @@ export async function getItems({
   });
 }
 
+function LayoutContainer({
+  view,
+  children,
+}: {
+  view: string;
+  children: ReactNode;
+}) {
+  if (view === "grid") {
+    return (
+      <div
+        className="grid justify-center flex-1"
+        style={{
+          gridTemplateColumns: "repeat(auto-fit, minmax(210px, max-content))",
+          gridGap: "16px",
+          justifyContent: "center",
+        }}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  return <div className="inline-block">{children}</div>;
+}
+
 export default async function ItemsList({
   items,
   contents,
@@ -40,11 +66,11 @@ export default async function ItemsList({
   return (
     <>
       <div className="flex items-center justify-center align-middle">
-        <div className="inline-block">
+        <LayoutContainer view={view}>
           {items.map((item, i) => (
             <Item view={view} key={item.id} item={item} content={contents[i]} />
           ))}
-        </div>
+        </LayoutContainer>
       </div>
     </>
   );

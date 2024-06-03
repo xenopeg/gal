@@ -94,8 +94,8 @@ function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
 function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
   return (
     <>
-      <Link
-        href={`/items/${item.uri}`}
+      <div
+        // href={`/items/${item.uri}`}
         className="group bg-zinc-900 inline-block m-4 shadow-xl shadow-black/20
           rounded-md overflow-hidden w-48 h-72 relative cursor-pointer"
       >
@@ -130,7 +130,7 @@ function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
             </Link>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 }
