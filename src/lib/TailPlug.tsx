@@ -30,7 +30,7 @@ const proxy = (Tag: AnyComponent | string) => {
       }
 
       return (
-        <Tag {...props} className={`${props.className} ${classes}`}>
+        <Tag {...props} className={`${props.className??""} ${classes}`}>
           {props.children}
         </Tag>
       );
@@ -38,11 +38,11 @@ const proxy = (Tag: AnyComponent | string) => {
   };
 };
 
-const tailplug = new Proxy(proxy as Tags, {
+const plug = new Proxy(proxy as Tags, {
   get(_, name) {
     const Tag = name as keyof JSX.IntrinsicElements;
     return proxy(Tag);
   },
 });
 
-export default tailplug;
+export default plug;

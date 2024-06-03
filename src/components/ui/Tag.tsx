@@ -1,4 +1,4 @@
-import tailplug from "@/lib/TailPlug";
+import plug from "@/lib/TailPlug";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ function getTagColor(type:string){
   return TagTypes[type as keyof typeof TagTypes] ?? "bg-zinc-600";
 }
 
-const LinkyTag = tailplug(Link)`
+const LinkyTag = plug(Link)`
   inline-block text-sm px-1 rounded 
   text-slate-300
   ${props => getTagColor(props.type)} 

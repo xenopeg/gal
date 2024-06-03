@@ -8,7 +8,8 @@ export default function Breadcrumb(props: {
   const url = props.url;
   return (
     <Link
-      className="inline-block p-1 rounded text-slate-300 hover:text-violet-400 hover:bg-violet-950"
+      className="font-semibold inline-block py-1 px-2 rounded text-slate-300
+        hover:bg-violet-950/70 hover:underline hover:italic"
       href={url}
     >
       {props.children}
@@ -18,8 +19,6 @@ export default function Breadcrumb(props: {
 
 export function BreadSeparator() {
   return (
-    <span className="inline-block p-1 rounded text-slate-400 ">
-      {">"}
-    </span>
+    <span className="inline-block p-1 rounded text-slate-400 ">{">"}</span>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import tailplug from "@/lib/TailPlug";
+import plug from "@/lib/TailPlug";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 
-const ToggleButton = tailplug.button`
+const ToggleButton = plug.button`
   relative cursor-pointer p-2 rounded-full 
   bg-violet-500/10 hover:bg-violet-500/30
   transition-colors

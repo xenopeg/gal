@@ -5,7 +5,9 @@ import type { Prisma } from "@prisma/client";
 import prisma from "@/db";
 import path from "path";
 import Tag from "./Tag";
-import tailplug from "@/lib/TailPlug";
+import plug from "@/lib/TailPlug";
+import Link from "next/link";
+import Spacer from "./Spacer";
 
 export type ItemWithInfo = Prisma.PromiseReturnType<typeof getItem>;
 
@@ -34,7 +36,7 @@ export async function getItem(uri: string) {
 export async function getFileContent(item: ItemWithInfo) {
   const basePath = (await prisma.appSettings.findFirstOrThrow()).basePath;
   const fullPath = path.join(basePath, item.filePath);
-  console.log(fullPath);
+
   if (item.type.type === "Markdown") {
     return await fs.readFile(fullPath, "utf-8");
   }
@@ -42,31 +44,39 @@ export async function getFileContent(item: ItemWithInfo) {
   return Buffer.from([]);
 }
 
-const ItemContainer = tailplug.div`
+const ItemContainer = plug.div`
   container overflow-auto rounded-md 
   bg-violet-900/10 shadow
   dark:shadow-violet-200/10
 `;
-const ItemHeader = tailplug.div`
+const ItemHeader = plug.div`
   flex flex-row items-center 
   border-b border-zinc-900 px-4 py-2
 `;
 
-const Item: React.FC<{ item: ItemWithInfo; content: string | Buffer }> = ({
-  item,
-  content,
-}) => {
+function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
   return (
     <div className="px-4 py-2">
       <ItemContainer>
         <ItemHeader>
-          <h2 className="flex-1 text-2xl">{item.title}</h2>
+          <Link
+            href={"/items/" + item.uri}
+            className="text-2xl hover:underline"
+          >
+            {item.title}
+          </Link>
+          <Spacer />
           <span className="italic">{item.type.type}</span>
         </ItemHeader>
         <div className="bg-zinc-900/50 px-4 py-2 ">
           {item.type.type === "Markdown" && (
             <div className="prose prose-sm dark:prose-invert">
               <ReactMarkdown>{content as string}</ReactMarkdown>
+            </div>
+          )}
+          {item.type.type === "Image" && (
+            <div className="">
+              <img src={`api/getItem/${item.filePath}`} />
             </div>
           )}
         </div>
@@ -80,6 +90,68 @@ const Item: React.FC<{ item: ItemWithInfo; content: string | Buffer }> = ({
       </ItemContainer>
     </div>
   );
+}
+function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
+  return (
+    <>
+      <Link
+        href={`/items/${item.uri}`}
+        className="group bg-zinc-900 inline-block m-4 shadow-xl shadow-black/20
+          rounded-md overflow-hidden w-48 h-72 relative cursor-pointer"
+      >
+        <div
+          className="z-10 shadow-inner shadow-white/20 absolute top-0 left-0 right-0
+            bottom-0 w-full h-full group-hover:shadow-white/70"
+        ></div>
+        {item.type.type === "Image" && (
+          <img
+            className="object-cover h-full w-full"
+            src={`api/getItem/${item.filePath}`}
+          />
+        )}
+        {item.type.type === "Markdown" && (
+          <div className="prose prose-sm dark:prose-invert p-3">
+            <ReactMarkdown>{content as string}</ReactMarkdown>
+          </div>
+        )}
+
+        <div
+          className="p-2 bg-slate-900/60 text-white absolute left-0 right-0
+            bottom-0 w-full backdrop-blur-sm"
+        >
+          <div>
+            <Link href={`/items/${item.uri}`} className="hover:underline">
+              {item.title}
+            </Link>
+          </div>
+          <div className="text-right italic text-xs">
+            <Link href={`/items/${item.uri}`} className="hover:underline">
+              {item.uri}
+            </Link>
+          </div>
+        </div>
+      </Link>
+    </>
+  );
+}
+function RenderItemList(item: ItemWithInfo, content: string | Buffer) {
+  return <></>;
+}
+
+const Item: React.FC<{
+  item: ItemWithInfo;
+  content: string | Buffer;
+  view: string;
+}> = ({ item, content, view }) => {
+  if (view === "blog") {
+    return RenderItemBlog(item, content);
+  } else if (view === "list") {
+    return RenderItemList(item, content);
+  } else if (view === "grid") {
+    return RenderItemGrid(item, content);
+  }
+  // default to Grid
+  return RenderItemGrid(item, content);
 };
 
 export default Item;

@@ -1,7 +1,8 @@
-import Image from "next/image";
+import FileBrowser from "@/components/ui/FileBrowser";
 
 export default function Home() {
   return (
-    <></>
+    <>
+    </>
   );
 }

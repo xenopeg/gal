@@ -1,7 +1,7 @@
-import tailplug from "@/lib/TailPlug";
+import plug from "@/lib/TailPlug";
 import { ReactNode } from "react";
 
-const SidebarContainer = tailplug.aside`
+const SidebarContainer = plug.aside`
   h-screen w-64 pt-2 transition-transform 
   border-r border-gray-200 dark:border-zinc-800
   bg-white dark:bg-zinc-900/40 

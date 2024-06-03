@@ -18,41 +18,43 @@ export const metadata: Metadata = {
   description: "a",
 };
 
+const themeLoader = `
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if(!localStorage.theme){
+      localStorage.setItem("theme", "dark");
+    }
+    document.documentElement.classList.add('dark')
+  } else {
+    if(!localStorage.theme){
+      localStorage.setItem("theme", "light");
+    }
+    document.documentElement.classList.remove('dark')
+  }
+`;
+
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-              if(!localStorage.theme){
-                localStorage.setItem("theme", "dark");
-              }
-              document.documentElement.classList.add('dark')
-            } else {
-              if(!localStorage.theme){
-                localStorage.setItem("theme", "light");
-              }
-              document.documentElement.classList.remove('dark')
-            }
-          `,
+            __html: themeLoader,
           }}
         />
         <div className="h-screen w-screen flex flex-col">
           <Header />
           <div className="flex flex-row overflow-hidden flex-1 w-screen">
             <Sidebar>
-              <SidebarButton href="#" icon={<IconHome />}>
+              <SidebarButton href="/home" icon={<IconHome />}>
                 Home
               </SidebarButton>
-              <SidebarButton href="#" icon={<IconSquares />}>
+              <SidebarButton href="/gal" icon={<IconSquares />}>
                 Galleries
               </SidebarButton>
-              <SidebarButton href="#" icon={<IconList />}>
+              <SidebarButton href="/items" icon={<IconList />}>
                 Items
               </SidebarButton>
-              <SidebarButton href="#" icon={<IconQuestionMark />}>
+              <SidebarButton href="/about" icon={<IconQuestionMark />}>
                 About
               </SidebarButton>
             </Sidebar>
