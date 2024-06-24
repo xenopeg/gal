@@ -74,21 +74,3 @@ const plug = new Proxy(proxy as Tags, {
 });
 
 export default plug;
-
-type A = {
-  p: string;
-};
-type B = {
-  p: boolean;
-};
-const F = <T extends { p?: any }>(a: T) => {
-  return a?.p as (typeof a)["p"];
-};
-const a: A = {
-  p: "a",
-};
-const b: B = {
-  p: false,
-};
-const rA = F(a);
-const rB = F(b);
