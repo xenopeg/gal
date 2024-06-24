@@ -101,7 +101,7 @@ function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
       >
         <div
           className="z-10 shadow-inner shadow-white/20 absolute top-0 left-0 right-0
-            bottom-0 w-full h-full group-hover:shadow-white/70"
+            bottom-0 w-full h-full group-hover:shadow-white/70 pointer-events-none"
         ></div>
         {item.type.type === "Image" && (
           <img

@@ -20,9 +20,11 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const data = await getItems({});
-  const content = await Promise.all(data.map((d) => getFileContent(d)));
   const view = searchParams?.view as string;
+  const query = searchParams?.q as string;
+  const tags = query?.split(",").map(q => q.trim()).filter(q => q.length);
+  const data = await getItems({tags});
+  const content = await Promise.all(data.map((d) => getFileContent(d)));
   return (
     <>
       <div
@@ -30,7 +32,7 @@ export default async function Page({
           justify-center align-middle"
       >
         <div>
-          <Breadcrumb url="#">Items</Breadcrumb>
+          <Breadcrumb url="#">All Items</Breadcrumb>
         </div>
         <Spacer />
         <div className="flex">
@@ -46,7 +48,7 @@ export default async function Page({
         </div>
       </div>
       <div className="">
-        <ItemsList view={view} items={data} contents={content} />
+        <ItemsList view={view} items={data} contents={content}  />
       </div>
     </>
   );

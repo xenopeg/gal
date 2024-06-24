@@ -3,11 +3,11 @@ import Item, { ItemWithInfo } from "./Item";
 import { ReactNode } from "react";
 
 export async function getItems({
-  filter,
+  tags = [],
   pageSize = 20,
   page = 1,
 }: {
-  filter?: string;
+  tags?: string[];
   pageSize?: number;
   page?: number;
 }) {
@@ -22,6 +22,26 @@ export async function getItems({
       },
       type: true,
     },
+    where:
+      tags.length === 0
+        ? undefined
+        : {
+            AND: [
+              ...tags.map((tag) => ({
+                tags: {
+                  some: {
+                    name: tag.indexOf(":") > 0 ? tag.split(":")[1] : tag,
+                    type:
+                      tag.indexOf(":") > 0
+                        ? {
+                            type: tag.split(":")[0],
+                          }
+                        : undefined,
+                  },
+                },
+              })),
+            ],
+          },
   });
 }
 

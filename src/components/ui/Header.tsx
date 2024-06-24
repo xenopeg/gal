@@ -1,6 +1,7 @@
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   return (
@@ -25,6 +26,7 @@ export default function Header() {
               </span>
             </a>
           </div>
+          <SearchBar />
           <div className="flex items-center">
             <DarkModeToggle />
           </div>

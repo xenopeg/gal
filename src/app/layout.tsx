@@ -52,7 +52,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
                 Galleries
               </SidebarButton>
               <SidebarButton href="/items" icon={<IconList />}>
-                Items
+                All Items
               </SidebarButton>
               <SidebarButton href="/about" icon={<IconQuestionMark />}>
                 About

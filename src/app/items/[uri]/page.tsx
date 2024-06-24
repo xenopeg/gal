@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { uri: string } }) {
   return (
     <>
       <div className="pt-2 px-4">
-        <Breadcrumb url="#">Items</Breadcrumb>
+        <Breadcrumb url="#">All Items</Breadcrumb>
         <BreadSeparator />
         <Breadcrumb url="#">{title}</Breadcrumb>
       </div>

@@ -1,4 +1,12 @@
-import { ReactNode, DetailedHTMLProps, SVGProps, HTMLAttributes } from "react";
+import {
+  ReactNode,
+  DetailedHTMLProps,
+  SVGProps,
+  HTMLAttributes,
+  InputHTMLAttributes,
+  ElementType,
+  FC,
+} from "react";
 
 type AnyComponent<P extends object = any> = React.ComponentType<P>;
 
@@ -6,8 +14,13 @@ type Taggable = (
   strings: TemplateStringsArray,
   ...n: ((props: any) => string)[]
 ) => (
-  props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> &
-    SVGProps<SVGGElement> &
+  props: DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > &
+    // I need to find a better way to do this
+    // DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> &
+    // SVGProps<SVGGElement> &
     Record<string, any>,
 ) => ReactNode;
 
@@ -16,8 +29,16 @@ interface Tags {
   [tag: string]: Taggable;
 }
 
-const proxy = (Tag: AnyComponent | string) => {
-  return (strings: TemplateStringsArray, ...n: ((props: any) => string)[]) => {
+interface ComponentProps extends HTMLAttributes<HTMLOrSVGElement> {
+  as?: ElementType;
+}
+
+const Component: FC<ComponentProps> = ({ as: Tag = "div", ...otherProps }) => {
+  return <Tag {...otherProps} />;
+};
+
+const proxy = <T,>(Tag: AnyComponent, tag?: string): T => {
+  return ((strings: TemplateStringsArray, ...n: ((props: any) => string)[]) => {
     return (props: any) => {
       let classes = "";
       for (let i = 0; i < strings.length; i++) {
@@ -29,20 +50,45 @@ const proxy = (Tag: AnyComponent | string) => {
         }
       }
 
-      return (
-        <Tag {...props} className={`${props.className??""} ${classes}`}>
+      const res = (
+        <Tag
+          as={tag ?? undefined}
+          {...props}
+          className={`${props.className ?? ""} ${classes}`}
+        >
           {props.children}
         </Tag>
       );
+
+      return res;
     };
-  };
+  }) as T;
 };
 
+//const outerProxy = (el:)=>{}
+
 const plug = new Proxy(proxy as Tags, {
-  get(_, name) {
-    const Tag = name as keyof JSX.IntrinsicElements;
-    return proxy(Tag);
+  get(_, name: keyof JSX.IntrinsicElements) {
+    return proxy(Component, name);
   },
 });
 
 export default plug;
+
+type A = {
+  p: string;
+};
+type B = {
+  p: boolean;
+};
+const F = <T extends { p?: any }>(a: T) => {
+  return a?.p as (typeof a)["p"];
+};
+const a: A = {
+  p: "a",
+};
+const b: B = {
+  p: false,
+};
+const rA = F(a);
+const rB = F(b);
