@@ -49,7 +49,6 @@ export default function SearchBar() {
         return false;
       }}
     >
-      <input type="text" />
       <Input
         value={query}
         name="q"
