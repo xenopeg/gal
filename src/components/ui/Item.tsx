@@ -8,6 +8,7 @@ import Tag from "./Tag";
 import plug from "@/lib/TailPlug";
 import Link from "next/link";
 import Spacer from "./Spacer";
+import { IconMarkdown } from "@tabler/icons-react";
 
 export type ItemWithInfo = Prisma.PromiseReturnType<typeof getItem>;
 
@@ -91,6 +92,38 @@ function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
     </div>
   );
 }
+function RenderItemList(item: ItemWithInfo, content: string | Buffer) {
+  return (
+    <div className="px-4 py-2">
+      <div className="h-20  flex flex-row">
+        <div className="bg-zinc-800 w-20 overflow-hidden">
+        {item.type.type === "Image" && (
+          <img
+            className="object-cover h-full w-full"
+            src={`api/getItem/${item.filePath}`}
+          />
+        )}
+        {item.type.type === "Markdown" && (
+          <IconMarkdown className="object-cover h-full w-full" />
+        )}
+        </div>
+        <div className="flex-1 bg-violet-900/10 py-1 px-2">
+
+        <div>
+            <Link href={`/items/${item.uri}`} className="hover:underline">
+              {item.title}
+            </Link>
+          </div>
+          <div className="text-right italic text-xs">
+            <Link href={`/items/${item.uri}`} className="hover:underline">
+              {item.uri}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
   return (
     <>
@@ -133,9 +166,6 @@ function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
       </div>
     </>
   );
-}
-function RenderItemList(item: ItemWithInfo, content: string | Buffer) {
-  return <></>;
 }
 
 const Item: React.FC<{

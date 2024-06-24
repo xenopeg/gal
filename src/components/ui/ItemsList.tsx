@@ -67,7 +67,10 @@ function LayoutContainer({
     );
   }
 
-  return <div className="inline-block">{children}</div>;
+  if (view === "blog") {
+    return <div className="inline-block">{children}</div>;
+  }
+  return <div className="flex-1">{children}</div>;
 }
 
 export default async function ItemsList({
