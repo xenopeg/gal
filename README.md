@@ -31,18 +31,19 @@ Currently working on setting up UI, state, DB, and Auth
   - [ ] Based on simplified versions of names
   - [ ] Backing up this structure should keep all the data intact, even if Gal db is lost
     - [ ] Will require some basic file-management UI
+    - [ ] Consider how to do thumbnails for large images
 - [ ] UI
   - [ ] Data displays
-    - [ ] Images
+    - [x] Images
     - [ ] Video
-    - [ ] Markdown
+    - [x] Markdown
       - [x] Basic support
       - [ ] Support linking other items
     - [ ] 3D models
   - [ ] List displays
-    - [ ] Blog
+    - [x] Blog
     - [ ] Forum
-    - [ ] Grid
+    - [x] Grid
   - [ ] Themes
     - [ ] Dark-mode
     - [ ] Light-mode
