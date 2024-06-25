@@ -2,8 +2,20 @@ import React from "react";
 import Item, { getFileContent, getItem } from "../../../components/ui/Item";
 import Breadcrumb, { BreadSeparator } from "@/components/ui/Breadcrumb";
 
-export default async function Page({ params, searchParams }: { params: { uri: string }, searchParams: any }) {
-  const data = await getItem(params.uri);
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { uri: string };
+  searchParams: any;
+}) {
+  let data;
+  try {
+    data = await getItem(params.uri);
+  } catch (e) {
+    return 404;
+  }
+
   const content = await getFileContent(data);
   const title = data.title;
 
@@ -15,7 +27,12 @@ export default async function Page({ params, searchParams }: { params: { uri: st
         <Breadcrumb url={`/items/${params.uri}`}>{title}</Breadcrumb>
       </div>
       <div className="">
-        <Item view={"blog"} item={data} content={content} searchParams={new URLSearchParams(searchParams).toString()} />
+        <Item
+          view={"blog"}
+          item={data}
+          content={content}
+          searchParams={new URLSearchParams(searchParams).toString()}
+        />
       </div>
     </>
   );

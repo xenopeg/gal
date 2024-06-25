@@ -30,7 +30,6 @@ export async function getItem(uri: string) {
     });
     return item;
   } catch (e) {
-    console.log(e);
     throw e;
   }
 }

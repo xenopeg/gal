@@ -33,7 +33,21 @@ export async function GET(
 ) {
   const basePath = (await prisma.appSettings.findFirstOrThrow()).basePath;
 
-  const file = path.resolve(basePath, ...params.file);
+  // get Item object from file path to control file access
+  const item = await prisma.item.findFirst({
+    where: {
+      filePath: params.file.join('/')
+    }
+  })
+
+  if(!item){
+    console.log("Item not found")
+    return 404;
+  }
+
+  // ToDo: check permissions here
+
+  const file = path.resolve(basePath, item.filePath);
   const stats = await fs.promises.stat(file); // Get the file size
   const data: ReadableStream<Uint8Array> = streamFile(file); // Stream the file with a 1kb chunk
   const res = new NextResponse(data, {
