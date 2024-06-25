@@ -3,7 +3,8 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 const TagTypes = {
-  author: "bg-yellow-700 hover:bg-yellow-800"
+  author: "bg-yellow-700 hover:bg-yellow-800 active:bg-yellow-600",
+  characteristic: "bg-slate-700 hover:bg-slate-800 active:bg-slate-600",
 }
 
 function getTagColor(type:string){
@@ -12,7 +13,7 @@ function getTagColor(type:string){
 
 const LinkyTag = plug(Link)`
   inline-block text-sm px-1 rounded 
-  text-slate-300
+  text-slate-300 mx-1
   ${props => getTagColor(props.type)} 
 `;
 
@@ -28,7 +29,7 @@ export default function Tag({tag}: {
   return (
     <LinkyTag
       type={tag.type.type}
-      href={`/tags/${tag.type.type}:${tag.name}`}
+      href={`/items?view=list&q=${encodeURIComponent(tag.type.showType?tag.type.type+":":"")}${encodeURIComponent(tag.name)}`}
     >
       {(tag.type.showType)?`${tag.type.type}:`:""}{tag.name}
     </LinkyTag>

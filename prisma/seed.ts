@@ -42,6 +42,20 @@ async function main() {
         },
     },
   });
+  const sharkTag = await prisma.itemTags.upsert({
+    where: { name: "shark" },
+    update:{},
+    create: {
+        name: "shark",
+        type: {
+          create: {
+            type: "characteristic",
+            description: "A shark",
+            showType: false,
+          },
+        },
+    },
+  });
   const admin = await prisma.user.upsert({
     where: { email: "admin@example" },
     update: {},
@@ -112,6 +126,7 @@ async function main() {
         create: [
           {
             title: "Sample note",
+            description: "A note",
             filePath: "notes/sample.md",
             uri: "sample.md",
             uploadDate: new Date(),
@@ -119,6 +134,7 @@ async function main() {
             type: {connect:type},
           },{
             title: "Sample note 2",
+            description: "A note",
             filePath: "notes/sample2.md",
             uri: "sample2.md",
             uploadDate: new Date(),
@@ -126,17 +142,19 @@ async function main() {
             type: {connect:type},
           },{
             title: "Sample Image",
+            description: "Quick sketch",
             filePath: "notes/sample.png",
             uri: "sample.png",
             uploadDate: new Date(),
-            tags: {connect:[author]},
+            tags: {connect:[author, sharkTag]},
             type: {connect:typePNG},
           },{
             title: "Sample Image",
+            description: "Quick sketch",
             filePath: "notes/sample2.png",
             uri: "sample2.png",
             uploadDate: new Date(),
-            tags: {connect:[author]},
+            tags: {connect:[author, sharkTag]},
             type: {connect:typePNG},
           },
         ],

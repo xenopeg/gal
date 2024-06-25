@@ -77,10 +77,12 @@ export default async function ItemsList({
   items,
   contents,
   view,
+  searchParams
 }: {
   items: ItemWithInfo[];
   contents: (string | Buffer)[];
   view: string;
+  searchParams:string;
 }) {
   if (!view) {
     // get from gallery options
@@ -91,7 +93,7 @@ export default async function ItemsList({
       <div className="flex items-center justify-center align-middle">
         <LayoutContainer view={view}>
           {items.map((item, i) => (
-            <Item view={view} key={item.id} item={item} content={contents[i]} />
+            <Item view={view} key={item.id} item={item} content={contents[i]} searchParams={searchParams}/>
           ))}
         </LayoutContainer>
       </div>

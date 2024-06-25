@@ -18,7 +18,7 @@ const ViewButton = plug(Link)`
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: any|{ [key: string]: string | string[] | undefined };
 }) {
   const view = searchParams?.view as string;
   const query = searchParams?.q as string;
@@ -32,7 +32,7 @@ export default async function Page({
           justify-center align-middle"
       >
         <div>
-          <Breadcrumb url="#">All Items</Breadcrumb>
+          <Breadcrumb url="/items">All Items</Breadcrumb>
         </div>
         <Spacer />
         <div className="flex">
@@ -48,7 +48,7 @@ export default async function Page({
         </div>
       </div>
       <div className="">
-        <ItemsList view={view} items={data} contents={content}  />
+        <ItemsList view={view} items={data} contents={content} searchParams={(new URLSearchParams(searchParams)).toString()} />
       </div>
     </>
   );

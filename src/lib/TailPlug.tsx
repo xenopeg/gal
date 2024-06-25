@@ -65,8 +65,6 @@ const proxy = <T,>(Tag: AnyComponent, tag?: string): T => {
   }) as T;
 };
 
-//const outerProxy = (el:)=>{}
-
 const plug = new Proxy(proxy as Tags, {
   get(_, name: keyof JSX.IntrinsicElements) {
     return proxy(Component, name);

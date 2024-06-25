@@ -2,7 +2,7 @@
 
 A gallery for pretty much everything that just kinda doubles as a knowledge base.
 
-Goal is to support booru-style tags for most kinda of data, be it Markdown, 
+Goal is to support booru-style tags for most kinds of data, be it Markdown, 
 images, videos, or 3D models, and allow the creation of "Collections", which
 defines how it gets displayed.
 
@@ -32,14 +32,20 @@ Currently working on setting up UI, state, DB, and Auth
   - [ ] Backing up this structure should keep all the data intact, even if Gal db is lost
     - [ ] Will require some basic file-management UI
     - [ ] Consider how to do thumbnails for large images
+      - [ ] Also create thumbnails for Markdown files?
 - [ ] UI
   - [ ] Data displays
-    - [x] Images
-    - [ ] Video
-    - [x] Markdown
-      - [x] Basic support
-      - [ ] Support linking other items
-    - [ ] 3D models
+    - [ ] Types
+      - [x] Images
+      - [ ] Video
+      - [x] Markdown
+        - [x] Basic support
+        - [ ] Support linking other items
+      - [ ] 3D models
+    - [ ] Related items?
+    - [ ] Searching
+      - [ ] Tag search
+      - [ ] Autocomplete
   - [ ] List displays
     - [x] Blog
     - [ ] Forum

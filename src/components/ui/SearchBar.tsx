@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import plug from "@/lib/TailPlug";
 import { useRouter } from "next/navigation";
@@ -39,6 +39,14 @@ export default function SearchBar() {
   );
   const q = Object.fromEntries(Array.from(searchParams.entries())).q;
   const [query, setQuery] = useState(q);
+  
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if(q){
+      setQuery(q);
+    }
+  }, [searchParams])
+
   return (
     <Form
       onSubmit={(ev) => {

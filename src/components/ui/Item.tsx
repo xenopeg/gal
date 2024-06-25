@@ -9,6 +9,7 @@ import plug from "@/lib/TailPlug";
 import Link from "next/link";
 import Spacer from "./Spacer";
 import { IconMarkdown } from "@tabler/icons-react";
+import { useSearchParams } from "next/navigation";
 
 export type ItemWithInfo = Prisma.PromiseReturnType<typeof getItem>;
 
@@ -55,13 +56,17 @@ const ItemHeader = plug.div`
   border-b border-zinc-900 px-4 py-2
 `;
 
-function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
+function RenderItemBlog(
+  item: ItemWithInfo,
+  content: string | Buffer,
+  searchParams: string,
+) {
   return (
     <div className="px-4 py-2">
       <ItemContainer>
         <ItemHeader>
           <Link
-            href={"/items/" + item.uri}
+            href={`/items/${item.uri}?${searchParams}`}
             className="text-2xl hover:underline"
           >
             {item.title}
@@ -77,10 +82,11 @@ function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
           )}
           {item.type.type === "Image" && (
             <div className="">
-              <img src={`api/getItem/${item.filePath}`} />
+              <img src={`/api/getItem/${item.filePath}`} />
             </div>
           )}
         </div>
+        <div className="px-4 py-2 ">{item.description}</div>
         <div className="p-2">
           <div>
             {item.tags.map((tag) => (
@@ -92,54 +98,75 @@ function RenderItemBlog(item: ItemWithInfo, content: string | Buffer) {
     </div>
   );
 }
-function RenderItemList(item: ItemWithInfo, content: string | Buffer) {
+function RenderItemList(
+  item: ItemWithInfo,
+  content: string | Buffer,
+  searchParams: string,
+) {
   return (
     <div className="px-4 py-2">
-      <div className="h-20  flex flex-row">
+      <div className="h-20 flex flex-row">
         <div className="bg-zinc-800 w-20 overflow-hidden">
-        {item.type.type === "Image" && (
-          <img
-            className="object-cover h-full w-full"
-            src={`api/getItem/${item.filePath}`}
-          />
-        )}
-        {item.type.type === "Markdown" && (
-          <IconMarkdown className="object-cover h-full w-full" />
-        )}
+          {item.type.type === "Image" && (
+            <img
+              className="object-cover h-full w-full"
+              src={`/api/getItem/${item.filePath}`}
+            />
+          )}
+          {item.type.type === "Markdown" && (
+            <IconMarkdown className="object-cover h-full w-full" />
+          )}
         </div>
-        <div className="flex-1 bg-violet-900/10 py-1 px-2">
-
-        <div>
-            <Link href={`/items/${item.uri}`} className="hover:underline">
-              {item.title}
-            </Link>
+        <div className="flex-1 bg-violet-900/10 py-0.5 px-2 flex flex-col">
+          <div className="flex flex-row">
+            <div className="flex-1">
+              <Link
+                href={`/items/${item.uri}?${searchParams}`}
+                className="hover:underline"
+              >
+                {item.title}
+              </Link>
+            </div>
+            <div className="text-right italic text-xs">
+              <Link
+                href={`/items/${item.uri}?${searchParams}`}
+                className="hover:underline"
+              >
+                {item.uri}
+              </Link>
+            </div>
           </div>
-          <div className="text-right italic text-xs">
-            <Link href={`/items/${item.uri}`} className="hover:underline">
-              {item.uri}
-            </Link>
+          <div className="text-xs flex-1">{item.description}</div>
+          <div className="ml-auto">
+            {item.tags.map((tag) => (
+              <Tag key={`${tag.type.type}:${tag.name}`} tag={tag} />
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
 }
-function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
+function RenderItemGrid(
+  item: ItemWithInfo,
+  content: string | Buffer,
+  searchParams: string,
+) {
   return (
     <>
       <div
-        // href={`/items/${item.uri}`}
         className="group bg-zinc-900 inline-block m-4 shadow-xl shadow-black/20
           rounded-md overflow-hidden w-48 h-72 relative cursor-pointer"
       >
         <div
-          className="z-10 shadow-inner shadow-white/20 absolute top-0 left-0 right-0
-            bottom-0 w-full h-full group-hover:shadow-white/70 pointer-events-none"
+          className="z-10 shadow-inner shadow-white/20 absolute top-0 left-0
+            right-0 bottom-0 w-full h-full group-hover:shadow-white/70
+            pointer-events-none"
         ></div>
         {item.type.type === "Image" && (
           <img
             className="object-cover h-full w-full"
-            src={`api/getItem/${item.filePath}`}
+            src={`/api/getItem/${item.filePath}`}
           />
         )}
         {item.type.type === "Markdown" && (
@@ -153,12 +180,18 @@ function RenderItemGrid(item: ItemWithInfo, content: string | Buffer) {
             bottom-0 w-full backdrop-blur-sm"
         >
           <div>
-            <Link href={`/items/${item.uri}`} className="hover:underline">
+            <Link
+              href={`/items/${item.uri}?${searchParams}`}
+              className="hover:underline"
+            >
               {item.title}
             </Link>
           </div>
           <div className="text-right italic text-xs">
-            <Link href={`/items/${item.uri}`} className="hover:underline">
+            <Link
+              href={`/items/${item.uri}?${searchParams}`}
+              className="hover:underline"
+            >
               {item.uri}
             </Link>
           </div>
@@ -172,16 +205,17 @@ const Item: React.FC<{
   item: ItemWithInfo;
   content: string | Buffer;
   view: string;
-}> = ({ item, content, view }) => {
+  searchParams: string;
+}> = ({ item, content, view, searchParams }) => {
   if (view === "blog") {
-    return RenderItemBlog(item, content);
+    return RenderItemBlog(item, content, searchParams);
   } else if (view === "list") {
-    return RenderItemList(item, content);
+    return RenderItemList(item, content, searchParams);
   } else if (view === "grid") {
-    return RenderItemGrid(item, content);
+    return RenderItemGrid(item, content, searchParams);
   }
   // default to Grid
-  return RenderItemGrid(item, content);
+  return RenderItemGrid(item, content, searchParams);
 };
 
 export default Item;
